@@ -1,3 +1,5 @@
+from .models import Artist
+
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from rest_framework.validators import UniqueTogetherValidator
@@ -23,3 +25,20 @@ class UserSerializer(serializers.ModelSerializer):
                 fields=['username']
             )
         ]
+
+class ArtistSerializer(serializers.ModelSerializer):
+    artist_name = serializers.CharField(max_length=120)
+    carreer_start_date = serializers.DateField()
+    place_of_origin = serializers.CharField(max_length=200)
+
+    def create(self, data):
+        artist = Artist.objects().create_artist(**data)
+        return artist
+
+    class Meta:
+        model = Artist
+        fields = (
+            'artist_name',
+            'carreer_start_date',
+            'place_of_origin',
+        )
